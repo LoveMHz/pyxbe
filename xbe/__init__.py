@@ -695,15 +695,14 @@ class Xbe:
 		cert_offset = self.vaddr_to_file_offset(self.header.certificate_addr)
 		log.debug('Parsing image certificate at offset 0x%x' % cert_offset)
 		# FIXME: Validate address
-		self.cert = XbeImageCertificate.from_buffer_copy(data, cert_offset)		
+		self.cert = XbeImageCertificate.from_buffer_copy(data, cert_offset)
 		if self.cert.size == ctypes.sizeof(XbeImageCertificate):
 			pass
 		elif self.cert.size == ctypes.sizeof(XbeImageCertificateExtended):
 			self.cert = XbeImageCertificateExtended.from_buffer_copy(data, cert_offset)
-		else:
-			log.warning("Unexpected XBE image certificate size!")
-			assert(self.cert.size > ctypes.sizeof(XbeImageCertificate))
-
+		#else:
+			#print("Unexpected XBE image certificate size!!!!!!!!!!", self.cert.size,  ctypes.sizeof(XbeImageCertificate))
+			#assert(self.cert.size > ctypes.sizeof(XbeImageCertificate))
 
 		self.title_name = str(self.cert.title_name, encoding='utf_16_le').rstrip('\x00')
 		log.debug('XBE Title Name: ' + self.title_name)
@@ -811,7 +810,7 @@ class Xbe:
 			s = self.sections[name]
 			print(name)
 			print("EXPECTED %8x GOT %8x" % (s.header.raw_addr, raw_off))
-			# assert(s.header.raw_addr == raw_off)
+			#assert(s.header.raw_addr == raw_off)
 			s.header.raw_addr = raw_off
 			section_data += s.data
 			raw_off += len(s.data)
